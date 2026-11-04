@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTRA / MBFT - Legislação e Fiscalização de Trânsito</title>
+    <style>
+        :root {
+            --primary: #0a192f;
+            --primary-light: #172a45;
+            --accent: #00bcd4;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --success: #4caf50;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --bg-body: #f4f6f9;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        /* Campo / High Contrast Mode */
+        body.mode-campo {
+            --primary: #000000;
+            --primary-light: #1a1a1a;
+            --accent: #ffff00;
+            --text-light: #ffffff;
+            --bg-body: #000000;
+            --card-bg: #111111;
+            --text-dark: #ffffff;
+            --border-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            padding-bottom: 70px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--text-light);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-status {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .search-box {
+            margin-top: 0.8rem;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            font-size: 1rem;
+            background: var(--card-bg);
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--primary-light);
+            overflow-x: auto;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 70px;
+            padding: 10px 5px;
+            background: none;
+            border: none;
+            color: #8892b0;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-top: 3px solid var(--accent);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .container {
+            padding: 12px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .filter-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-bottom: 12px;
+        }
+
+        .filter-chip {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: var(--text-light);
+            border-color: var(--primary);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+
+        }
+
+        .code-badge {
+            background: var(--primary-light);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        .nature-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .gravissima { background: rgba(244,67,54,0.15); color: #d32f2f; }
+        .grave { background: rgba(255,152,0,0.15); color: #f57c00; }
+        .media { background: rgba(255,235,59,0.2); color: #fbc02d; }
+        .leve { background: rgba(76,175,80,0.15); color: #388e3c; }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .detail-row {
+            font-size: 0.85rem;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .btn-action {
+            background: var(--primary-light);
+            color: var(--text-light);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .btn-field {
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 16px 0 10px 0;
+            color: var(--primary);
+        }
+
+        /* JSON Import Area */
+        textarea.json-input {
+            width: 100%;
+            height: 180px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-dark);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-title">
+        <h1>SISTRA / MBFT</h1>
+        <span class="badge-status" id="db-count">Carregando...</span>
+        <button class="btn-action btn-field" onclick="toggleCampoMode()">Modo Campo</button>
+    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Pesquisar artigo, código (ex: 763-01), termo..." oninput="filtrarInfrações()">
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- ABA 1: CONSULTA -->
+    <div id="tab-consulta">
+        <div class="filter-scroll">
+            <button class="filter-chip active" onclick="setFilter('todos', this)">Todas</button>
+            <button class="filter-chip" onclick="setFilter('gravissima', this)">Gravíssimas</button>
+            <button class="filter-chip" onclick="setFilter('grave', this)">Graves</button>
+            <button class="filter-chip" onclick="setFilter('media', this)">Médias</button>
+            <button class="filter-chip" onclick="setFilter('leve', this)">Leves</button>
+            <button class="filter-chip" onclick="setFilter('abordagem', this)">Exige Abordagem</button>
+        </div>
+
+        <div id="lista-infracoes"></div>
+    </div>
+
+    <!-- ABA 2: AIT VALIDADOR -->
+    <div id="tab-ait" class="hidden">
+        <div class="card">
+            <h2 class="section-title">Validador de AIT (Art. 280 CTB)</h2>
+            <p style="font-size:0.85rem; margin-bottom:12px;">Verifique os requisitos legais mínimos para evitar nulidade do Auto de Infração.</p>
+            
+            <label style="font-size:0.85rem; font-weight:bold;">Local da Infração:</label>
+            <input type="text" id="ait-local" placeholder="Ex: Av. Brasil, nº 1000 - Centro" style="width:100%; padding:8px; margin:4px 0 10px 0;">
+            
+            <label style="font-size:0.85rem; font-weight:bold;">Código de Enquadramento:</label>
+            <input type="text" id="ait-codigo" placeholder="Ex: 763-01" style="width:100%; padding:8px; margin:4px 0 10px 0;">
+
+            <label style="font-size:0.85rem; font-weight:bold;">Observações do Agente (MBFT):</label>
+            <textarea id="ait-obs" rows="3" placeholder="Descreva os detalhes da conduta observada..." style="width:100%; padding:8px; margin:4px 0 10px 0;"></textarea>
+
+            <button class="btn-action btn-field" style="width:100%; justify-content:center;" onclick="validarAIT()">Validar Requisitos Legais</button>
+            <div id="ait-resultado" style="margin-top:12px;"></div>
+        </div>
+    </div>
+
+    <!-- ABA 3: CONECTAR JSON -->
+    <div id="tab-json" class="hidden">
+        <div class="card">
+            <h2 class="section-title">Gestão de Base de Dados (JSON)</h2>
+            <p style="font-size:0.85rem; margin-bottom:10px;">Importe ou atualize a tabela completa de enquadramentos e desdobramentos do MBFT/SENATRAN.</p>
+            
+            <input type="file" id="fileInput" accept=".json" style="margin-bottom:10px;" onchange="importarArquivoJSON(event)">
+            
+            <h3 style="font-size:0.9rem; margin:10px 0 5px 0;">Ou cole o código JSON diretamente:</h3>
+            <textarea id="jsonPaste" class="json-input" placeholder='[{"codigo":"763-01","artigo":"252, VI","descricao":"Dirigir veículo utilizando celular","natureza":"Gravíssima","pontos":7,"valor":293.47,"competencia":"Municipal/Estadual"}]'></textarea>
+            
+            <div style="display:flex; gap:8px; margin-top:10px;">
+                <button class="btn-action" style="flex:1;" onclick="carregarJSONColado()">Carregar JSON</button>
+                <button class="btn-action" style="flex:1; background:var(--warning);" onclick="restaurarBasePadrao()">Restaurar Padrão</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAVEGAÇÃO INFERIOR -->
+<nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('consulta', this)">
+        <span>🔍</span>
+        <span>Consulta</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('ait', this)">
+        <span>📋</span>
+        <span>Validar AIT</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('json', this)">
+        <span>⚙️</span>
+        <span>Base JSON</span>
+    </button>
+</nav>
+
+<script>
+    // Base de dados inicial padrão
+    const dbPadrao = [
+        {
+            codigo: "763-01",
+            artigo: "252, VI",
+            descricao: "Dirigir veículo utilizando-se de telefone celular",
+            natureza: "gravissima",
+            pontos: 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem: true,
+            quando_autuar: "Condutor segurando ou falando ao telefone celular com o veículo em movimento.",
+            nao_autuar: "Telefone no suporte sem manuseio pelo condutor.",
+            obs_ait: "Informar se o condutor estava segurando ou falando ao telefone."
+        },
+        {
+            codigo: "516-91",
+            artigo: "165",
+            descricao: "Dirigir sob a influência de álcool",
+            natureza: "gravissima",
+            pontos: 7,
+            valor: 2934.70,
+            infrator: "Condutor",
+            competencia: "Estadual / Concorrente",
+            abordagem: true,
+            quando_autuar: "Condutor submetido ao teste de etilômetro com resultado igual ou superior a 0,05 mg/L de ar alveolar.",
+            nao_autuar: "Resultado do etilômetro até 0,04 mg/L (desconto da margem de erro).",
+            obs_ait: "Obrigatório constar número do etilômetro, número do teste, valor medido e valor considerado."
+        },
+        {
+            codigo: "758-70",
+            artigo: "250, I, g",
+            descricao: "Deixar de manter acesa a luz de baixa de dia em túneis ou rodovias",
+            natureza: "media",
+            pontos: 4,
+            valor: 130.16,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem: false,
+            quando_autuar: "Veículo em circulação em rodovias de pista simples fora de perímetro urbano sem farol aceso.",
+            nao_autuar: "Veículos com luz de rodagem diurna (DRL) ativa.",
+            obs_ait: "Descrever se o trecho trata-se de rodovia de pista simples."
+        }
+    ];
+
+    let infracoes = [];
+    let currentFilter = 'todos';
+
+    // Inicialização
+    window.onload = function() {
+        const localDb = localStorage.getItem('sistra_db');
+        if (localDb) {
+            try {
+                infracoes = JSON.parse(localDb);
+            } catch(e) {
+                infracoes = dbPadrao;
+            }
+        } else {
+            infracoes = dbPadrao;
+        }
+        atualizarContador();
+        renderizarInfrações(infracoes);
+    };
+
+    function renderizarInfrações(lista) {
+        const container = document.getElementById('lista-infracoes');
+        container.innerHTML = '';
+
+        if (lista.length === 0) {
+            container.innerHTML = '<div class="card"><p>Nenhuma infração encontrada.</p></div>';
+            return;
+        }
+
+        lista.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="code-badge">${item.codigo}</span>
+                    <span class="nature-badge ${item
