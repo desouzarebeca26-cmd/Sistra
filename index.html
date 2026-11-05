@@ -290,8 +290,9 @@
 </nav>
 
 <script>
-    // PARTE 1: Catálogo de Infrações do CTB (Art. 162 ao Art. 185)
+    // BASE DE DADOS COMPLETA (Parte 1: Art. 162 ao 185 | Parte 2: Art. 186 ao 210)
     const infracoes = [
+        // --- PARTE 1: Art. 162 ao 185 ---
         {
             codigo: "501-00",
             artigo: "162, I",
@@ -408,12 +409,12 @@
             codigo: "757-90",
             artigo: "165-A",
             descricao: "Recusar-se a submeter-se a teste, exame clínico ou perícia",
-            natureza": "gravissima",
-            pontos": 7,
+            natureza: "gravissima",
+            pontos: 7,
             valor: 2934.70,
             infrator: "Condutor",
             competencia: "Concorrente",
-            abordagem": true,
+            abordagem: true,
             quando_autuar: "Condutor que se recusa expressamente ao teste.",
             nao_autuar: "Equipamento indisponível ou sem aferição do INMETRO.",
             obs_ait: "Descrever expressamente a oferta e a recusa."
@@ -427,7 +428,7 @@
             valor: 195.23,
             infrator: "Condutor",
             competencia: "Concorrente",
-            abordagem": false,
+            abordagem: false,
             quando_autuar: "Condutor sem cinto com veículo em movimento.",
             nao_autuar: "Veículo imobilizado ou isenção médica.",
             obs_ait: "Descrever ausência ou uso incorreto."
@@ -571,6 +572,106 @@
             quando_autuar: "Sentido oposto ao regulamentado por placa R-3.",
             nao_autuar: "Manobra pontual de conversão.",
             obs_ait: "Nome da via e direção percorrida."
+        },
+
+        // --- PARTE 2: Art. 186 ao 210 ---
+        {
+            codigo: "574-61",
+            artigo: "186, III",
+            descricao: "Transitar pela contramão em rodovias, vias de duplo sentido, divididas por canteiro",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Rodar na pista contrária em rodovias ou vias com divisor físico.",
+            nao_autuar: "Ultrapassagem regulamentada em trecho permitido.",
+            obs_ait: "Local e sentido percorrido na contramão."
+        },
+        {
+            codigo: "581-97",
+            artigo: "193",
+            descricao: "Transitar com o veículo em calçadas, passeios, ciclovias ou canteiros centrais",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 880.41,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Rodar com o veículo sobre o passeio público, calçada ou ciclovia.",
+            nao_autuar: "Cruzamento rápido para acesso a garagens.",
+            obs_ait: "Descrever o local do passeio ou canteiro."
+        },
+        {
+            codigo: "583-50",
+            artigo: "195",
+            descricao: "Desobedecer às ordens dadas pelos agentes de autoridade de trânsito",
+            natureza": "grave",
+            pontos": 5,
+            valor: 195.23,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Condutor que desatende ordem verbal, gestual ou sinal de parada do agente.",
+            nao_autuar: "Ordem física impossível de ser cumprida por obstáculo na via.",
+            obs_ait: "Descrever a ordem dada e a recusa do condutor."
+        },
+        {
+            codigo: "596-70",
+            artigo: "203, V",
+            descricao: "Ultrapassar pela contramão linha de divisão de fluxos opostos contínua amarela",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 1467.35,
+            infrator": "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Realizar ultrapassagem transpondo marca viária longitudinal amarela contínua.",
+            nao_autuar: "Desvio de obstáculo imóvel na pista.",
+            obs_ait: "Descrever a marcação contínua na pista."
+        },
+        {
+            codigo: "605-01",
+            artigo: "208",
+            descricao: "Avançar o sinal vermelho do semáforo",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Transpor o cruzamento com o foco vermelho aceso.",
+            nao_autuar: "Desvio para abrir passagem a veículo de emergência.",
+            obs_ait: "Sentido e tipo de fiscalização."
+        },
+        {
+            codigo: "605-02",
+            artigo: "208",
+            descricao: "Avançar o sinal de parada obrigatória (placa R-1)",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Não imobilizar completamente o veículo diante do sinal R-1.",
+            nao_autuar: "Mera redução em placa Dê a Preferência (R-2).",
+            obs_ait: "Confirmar presença e legibilidade da placa R-1."
+        },
+        {
+            codigo: "612-20",
+            artigo: "214, I",
+            descricao: "Deixar de dar preferência de passagem a pedestre na faixa a ele destinada",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Pedestre iniciando travessia na faixa sem semáforo e condutor não para.",
+            nao_autuar: "Pedestre parado na calçada sem intenção clara de travessia.",
+            obs_ait: "Registrar que o pedestre já estava na faixa."
         }
     ];
 
@@ -649,7 +750,7 @@
     }
 
     function atualizarContador() {
-        document.getElementById('db-count').innerText = `${infracoes.length} Infrações (Parte 1)`;
+        document.getElementById('db-count').innerText = `${infracoes.length} Infrações (Até Art. 210)`;
     }
 
     function validarAIT() {
