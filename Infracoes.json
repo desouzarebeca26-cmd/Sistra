@@ -1,0 +1,44 @@
+[
+{
+"codigo": "501-00",
+"artigo": "162, I",
+"descricao": "Dirigir veículo sem possuir CNH, PPD ou ACC",
+"natureza": "gravissima",
+"pontos": 7,
+"valor": 880.41,
+"infrator": "Condutor",
+"competencia": "Concorrente",
+"abordagem": true,
+"quando_autuar": "Condutor abordado que não possui cadastro de condutor no RENACH.",
+"nao_autuar": "Condutor habilitado que apenas não porta o documento físico ou digital.",
+"obs_ait": "Confirmar ausência de registro via sistema oficial de pesquisa."
+},
+{
+"codigo": "502-91",
+"artigo": "162, II",
+"descricao": "Dirigir veículo com CNH, PPD ou ACC cassada ou suspensa",
+"natureza": "gravissima",
+"pontos": 7,
+"valor": 880.41,
+"infrator": "Condutor",
+"competencia": "Concorrente",
+"abordagem": true,
+"quando_autuar": "Condutor com penalidade de suspensão ou cassação ativa e notificada no sistema.",
+"nao_autuar": "Processo administrativo em andamento sem bloqueio efetivo na CNH.",
+"obs_ait": "Indicar o número do processo administrativo ou bloqueio RENACH nas observações."
+},
+{
+"codigo": "763-01",
+"artigo": "252, VI",
+"descricao": "Dirigir veículo utilizando-se de telefone celular",
+"natureza": "gravissima",
+"pontos": 7,
+"valor": 293.47,
+"infrator": "Condutor",
+"competencia": "Concorrente",
+"abordagem": false,
+"quando_autuar": "Condutor segurando ou falando ao telefone celular com o veículo em movimento.",
+"nao_autuar": "Telefone fixado em suporte no painel sendo utilizado apenas como GPS sem manuseio.",
+"obs_ait": "Informar detalhadamente no AIT se o condutor estava segurando ou falando ao telefone."
+}
+]
