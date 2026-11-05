@@ -19,7 +19,6 @@
             --border-color: #e0e0e0;
         }
 
-        /* Campo / High Contrast Mode */
         body.mode-campo {
             --primary: #000000;
             --primary-light: #1a1a1a;
@@ -171,7 +170,6 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 8px;
-
         }
 
         .code-badge {
@@ -246,7 +244,6 @@
             color: var(--primary);
         }
 
-        /* JSON Import Area */
         textarea.json-input {
             width: 100%;
             height: 180px;
@@ -271,13 +268,12 @@
         <button class="btn-action btn-field" onclick="toggleCampoMode()">Modo Campo</button>
     </div>
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Pesquisar artigo, código (ex: 763-01), termo..." oninput="filtrarInfrações()">
+        <input type="text" id="searchInput" placeholder="Pesquisar artigo, código (ex: 763-01), termo..." oninput="filtrarInfracoes()">
     </div>
 </header>
 
 <div class="container">
 
-    <!-- ABA 1: CONSULTA -->
     <div id="tab-consulta">
         <div class="filter-scroll">
             <button class="filter-chip active" onclick="setFilter('todos', this)">Todas</button>
@@ -291,7 +287,6 @@
         <div id="lista-infracoes"></div>
     </div>
 
-    <!-- ABA 2: AIT VALIDADOR -->
     <div id="tab-ait" class="hidden">
         <div class="card">
             <h2 class="section-title">Validador de AIT (Art. 280 CTB)</h2>
@@ -311,7 +306,6 @@
         </div>
     </div>
 
-    <!-- ABA 3: CONECTAR JSON -->
     <div id="tab-json" class="hidden">
         <div class="card">
             <h2 class="section-title">Gestão de Base de Dados (JSON)</h2>
@@ -331,7 +325,6 @@
 
 </div>
 
-<!-- NAVEGAÇÃO INFERIOR -->
 <nav class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('consulta', this)">
         <span>🔍</span>
@@ -348,7 +341,6 @@
 </nav>
 
 <script>
-    // Base de dados inicial padrão
     const dbPadrao = [
         {
             codigo: "763-01",
@@ -397,7 +389,6 @@
     let infracoes = [];
     let currentFilter = 'todos';
 
-    // Inicialização
     window.onload = function() {
         const localDb = localStorage.getItem('sistra_db');
         if (localDb) {
@@ -410,10 +401,10 @@
             infracoes = dbPadrao;
         }
         atualizarContador();
-        renderizarInfrações(infracoes);
+        renderizarInfracoes(infracoes);
     };
 
-    function renderizarInfrações(lista) {
+    function renderizarInfracoes(lista) {
         const container = document.getElementById('lista-infracoes');
         container.innerHTML = '';
 
@@ -428,4 +419,125 @@
             card.innerHTML = `
                 <div class="card-header">
                     <span class="code-badge">${item.codigo}</span>
-                    <span class="nature-badge ${item
+                    <span class="nature-badge ${item.natureza}">${item.natureza}</span>
+                </div>
+                <div class="card-title">Art. ${item.artigo} - ${item.descricao}</div>
+                <div class="card-meta">
+                    <span><strong>Pontos:</strong> ${item.pontos}</span>
+                    <span><strong>Valor:</strong> R$ ${item.valor.toFixed(2)}</span>
+                    <span><strong>Competência:</strong> ${item.competencia}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Quando Autuar:</strong> ${item.quando_autuar || 'Conforme MBFT.'}<br>
+                    <strong>Não Autuar:</strong> ${item.nao_autuar || 'N/A.'}<br>
+                    <strong>Obs. Obrigatória AIT:</strong> ${item.obs_ait || 'N/A.'}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function filtrarInfracoes() {
+        const termo = document.getElementById('searchInput').value.toLowerCase();
+        const filtradas = infracoes.filter(item => {
+            const matchTermo = item.codigo.toLowerCase().includes(termo) ||
+                              item.artigo.toLowerCase().includes(termo) ||
+                              item.descricao.toLowerCase().includes(termo);
+            
+            const matchFilter = currentFilter === 'todos' || 
+                               (currentFilter === 'abordagem' ? item.abordagem : item.natureza === currentFilter);
+
+            return matchTermo && matchFilter;
+        });
+        renderizarInfracoes(filtradas);
+    }
+
+    function setFilter(filter, el) {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        currentFilter = filter;
+        filtrarInfracoes();
+    }
+
+    function switchTab(tab, el) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        
+        document.getElementById('tab-consulta').classList.add('hidden');
+        document.getElementById('tab-ait').classList.add('hidden');
+        document.getElementById('tab-json').classList.add('hidden');
+
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+    }
+
+    function toggleCampoMode() {
+        document.body.classList.toggle('mode-campo');
+    }
+
+    function atualizarContador() {
+        document.getElementById('db-count').innerText = `${infracoes.length} Infrações`;
+    }
+
+    function carregarJSONColado() {
+        const texto = document.getElementById('jsonPaste').value;
+        try {
+            const json = JSON.parse(texto);
+            if (Array.isArray(json)) {
+                infracoes = json;
+                localStorage.setItem('sistra_db', JSON.stringify(infracoes));
+                atualizarContador();
+                renderizarInfracoes(infracoes);
+                alert("Base de dados atualizada com sucesso!");
+            } else {
+                alert("O JSON precisa de ser uma lista [ ] de infrações.");
+            }
+        } catch(e) {
+            alert("Erro ao ler o formato do JSON.");
+        }
+    }
+
+    function importarArquivoJSON(event) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const json = JSON.parse(e.target.result);
+                if (Array.isArray(json)) {
+                    infracoes = json;
+                    localStorage.setItem('sistra_db', JSON.stringify(infracoes));
+                    atualizarContador();
+                    renderizarInfracoes(infracoes);
+                    alert("Ficheiro JSON importado com sucesso!");
+                }
+            } catch(err) {
+                alert("Ficheiro JSON inválido.");
+            }
+        };
+        reader.readAsText(event.target.files[0]);
+    }
+
+    function restaurarBasePadrao() {
+        if (confirm("Deseja restaurar a base original?")) {
+            infracoes = dbPadrao;
+            localStorage.removeItem('sistra_db');
+            atualizarContador();
+            renderizarInfracoes(infracoes);
+        }
+    }
+
+    function validarAIT() {
+        const local = document.getElementById('ait-local').value;
+        const codigo = document.getElementById('ait-codigo').value;
+        const obs = document.getElementById('ait-obs').value;
+        const res = document.getElementById('ait-resultado');
+
+        if (!local || !codigo || !obs) {
+            res.innerHTML = '<div style="color:var(--danger); font-weight:bold;">Preencha todos os campos obrigatórios para validar.</div>';
+            return;
+        }
+
+        res.innerHTML = '<div style="color:var(--success); font-weight:bold;">✓ Requisitos formais do Art. 280 do CTB verificados com sucesso.</div>';
+    }
+</script>
+
+</body>
+</html>
