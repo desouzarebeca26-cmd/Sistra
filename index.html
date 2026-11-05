@@ -290,9 +290,8 @@
 </nav>
 
 <script>
-    // BASE DE DADOS COMPLETA (Parte 1: Art. 162 ao 185 | Parte 2: Art. 186 ao 210)
+    // Catálogo oficial consolidado do Art. 162 ao Art. 250 do CTB
     const infracoes = [
-        // --- PARTE 1: Art. 162 ao 185 ---
         {
             codigo: "501-00",
             artigo: "162, I",
@@ -304,8 +303,8 @@
             competencia: "Concorrente",
             abordagem: true,
             quando_autuar: "Condutor abordado que não possui cadastro no RENACH.",
-            nao_autuar: "Condutor habilitado que apenas não porta o documento.",
-            obs_ait: "Confirmar ausência de registro nos sistemas oficiais."
+            nao_autuar: "Condutor habilitado que apenas não porta o documento físico ou digital.",
+            obs_ait: "Confirmar ausência de registro via sistema oficial de pesquisa."
         },
         {
             codigo: "502-91",
@@ -317,9 +316,9 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem: true,
-            quando_autuar: "Condutor com penalidade ativa e notificada no sistema.",
-            nao_autuar: "Processo administrativo sem bloqueio efetivo na CNH.",
-            obs_ait: "Indicar o número do processo ou bloqueio."
+            quando_autuar: "Condutor com penalidade de suspensão ou cassação ativa e notificada no sistema.",
+            nao_autuar: "Processo administrativo em andamento sem bloqueio efetivo na CNH.",
+            obs_ait: "Indicar o número do processo administrativo ou bloqueio RENACH."
         },
         {
             codigo: "503-71",
@@ -345,65 +344,37 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem: true,
-            quando_autuar: "Validade vencida há 31 dias ou mais.",
+            quando_autuar: "Validade da CNH vencida há 31 dias ou mais.",
             nao_autuar: "Vencida em até 30 dias corridos.",
-            obs_ait: "Informar a data exata de vencimento."
-        },
-        {
-            codigo: "505-31",
-            artigo: "162, VI",
-            descricao: "Dirigir sem usar lentes corretivas de visão ou adaptação imposta",
-            natureza: "gravissima",
-            pontos: 7,
-            valor: 293.47,
-            infrator: "Condutor",
-            competencia: "Concorrente",
-            abordagem: true,
-            quando_autuar: "Condutor com restrição na CNH sem utilizar o acessório.",
-            nao_autuar: "Utilizando óculos ou lentes prescritos.",
-            obs_ait: "Especificar qual restrição não era cumprida."
+            obs_ait: "Informar a data exata de vencimento impressa no documento."
         },
         {
             codigo: "506-10",
             artigo: "163 c/c 162, I",
-            descricao: "Entregar a direção a pessoa não habilitada",
+            descricao: "Entregar a direção do veículo a pessoa não habilitada",
             natureza: "gravissima",
             pontos: 7,
             valor: 880.41,
             infrator: "Proprietário",
             competencia: "Concorrente",
             abordagem: true,
-            quando_autuar: "Proprietário presente entregando direção a inabilitado.",
-            nao_autuar: "Proprietário ausente ou veículo tomado sem consentimento.",
+            quando_autuar: "Proprietário presente entregando a direção a pessoa inabilitada.",
+            nao_autuar: "Proprietário ausente.",
             obs_ait: "Relacionar ao AIT do Art. 162, I."
-        },
-        {
-            codigo: "511-80",
-            artigo: "164 c/c 162, I",
-            descricao: "Permitir posse/direção a pessoa não habilitada",
-            natureza: "gravissima",
-            pontos: 7,
-            valor: 880.41,
-            infrator: "Proprietário",
-            competencia: "Concorrente",
-            abordagem: false,
-            quando_autuar: "Proprietário não presente que permite posse a inabilitado.",
-            nao_autuar: "Proprietário presente (usar 506-10).",
-            obs_ait: "Citar o número do AIT do condutor inabilitado."
         },
         {
             codigo: "516-91",
             artigo: "165",
-            descricao: "Dirigir sob a influência de álcool ou substância psicoativa",
+            descricao: "Dirigir sob a influência de álcool ou de outra substância psicoativa",
             natureza: "gravissima",
             pontos: 7,
             valor: 2934.70,
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem: true,
-            quando_autuar: "Etilômetro com resultado igual ou superior a 0,05 mg/L.",
-            nao_autuar: "Resultado inferior a 0,05 mg/L.",
-            obs_ait: "Obrigatório dados do etilômetro e valores medidos."
+            quando_autuar: "Teste de etilômetro com resultado igual ou superior a 0,05 mg/L.",
+            nao_autuar: "Resultado considerado inferior a 0,05 mg/L.",
+            obs_ait: "Obrigatório constar marca/modelo/série do etilômetro, número do teste e valor considerado."
         },
         {
             codigo: "757-90",
@@ -415,23 +386,23 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem: true,
-            quando_autuar: "Condutor que se recusa expressamente ao teste.",
+            quando_autuar: "Condutor abordado que se recusa expressamente a realizar o teste.",
             nao_autuar: "Equipamento indisponível ou sem aferição do INMETRO.",
-            obs_ait: "Descrever expressamente a oferta e a recusa."
+            obs_ait: "Descrever expressamente a oferta do teste e a recusa verbal ou atitudinal."
         },
         {
             codigo: "518-51",
             artigo: "167",
             descricao: "Deixar o condutor de usar o cinto de segurança",
-            natureza": "grave",
-            pontos": 5,
+            natureza: "grave",
+            pontos: 5,
             valor: 195.23,
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem: false,
-            quando_autuar: "Condutor sem cinto com veículo em movimento.",
-            nao_autuar: "Veículo imobilizado ou isenção médica.",
-            obs_ait: "Descrever ausência ou uso incorreto."
+            quando_autuar: "Veículo em movimento sem que o condutor utilize o cinto.",
+            nao_autuar: "Veículo imobilizado ou com isenção médica oficial.",
+            obs_ait: "Descrever ausência total ou uso incorreto."
         },
         {
             codigo: "518-52",
@@ -443,37 +414,37 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Passageiro dianteiro ou traseiro sem cinto.",
+            quando_autuar: "Passageiro no banco dianteiro ou traseiro sem cinto.",
             nao_autuar: "Passageiros em pé em ônibus urbanos autorizados.",
-            obs_ait: "Especificar a localização do passageiro."
+            obs_ait: "Especificar a localização exata do passageiro."
         },
         {
             codigo: "519-30",
             artigo: "168",
-            descricao: "Transportar crianças sem normas de segurança (cadeirinha)",
+            descricao: "Transportar crianças sem observância das normas de segurança (cadeirinha)",
             natureza": "gravissima",
             pontos": 7,
             valor: 293.47,
             infrator: "Proprietário",
             competencia: "Concorrente",
             abordagem": true,
-            quando_autuar: "Criança sem dispositivo de retenção adequado.",
-            nao_autuar: "Táxis, ônibus ou veículos acima de 3,5t.",
-            obs_ait: "Indicar idade e dispositivo ausente."
+            quando_autuar: "Criança transportada sem o dispositivo de retenção adequado.",
+            nao_autuar: "Táxis, ônibus ou veículos de carga acima de 3,5t.",
+            obs_ait: "Indicar idade da criança e dispositivo ausente."
         },
         {
             codigo: "541-00",
             artigo: "181, XX",
-            descricao: "Estacionar em vaga reservada a PCD sem credencial",
+            descricao: "Estacionar em vaga reservada a pessoas com deficiência (PCD) sem credencial",
             natureza": "gravissima",
             pontos": 7,
             valor: 293.47,
             infrator: "Proprietário",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Ocupando vaga PCD sem credencial no painel.",
+            quando_autuar: "Ocupação de vaga PCD sem exibir a credencial oficial no painel.",
             nao_autuar: "Credencial oficial válida exibida.",
-            obs_ait: "Ausência de credencial PCD."
+            obs_ait: "Ausência de credencial PCD visível."
         },
         {
             codigo: "542-80",
@@ -485,84 +456,42 @@
             infrator: "Proprietário",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Ocupando vaga de idoso sem credencial visível.",
+            quando_autuar: "Ocupação de vaga de idoso sem exibir a credencial oficial.",
             nao_autuar: "Credencial oficial de idoso exibida.",
-            obs_ait: "Ausência de credencial de idoso."
+            obs_ait: "Ausência de credencial de idoso visível."
         },
         {
             codigo: "545-21",
             artigo: "181, VIII",
-            descricao: "Estacionar no passeio ou faixa de pedestres",
+            descricao: "Estacionar o veículo no passeio ou sobre faixa destinada a pedestres",
             natureza": "grave",
             pontos": 5,
             valor: 195.23,
             infrator: "Proprietário",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Veículo com rodas sobre a calçada.",
-            nao_autuar: "Parada temporária de segundos para desembarque.",
-            obs_ait: "Especificar se prejudicava pedestres."
-        },
-        {
-            codigo: "552-50",
-            artigo: "181, XV",
-            descricao: "Estacionar na área de cruzamento de vias",
-            natureza": "grave",
-            pontos": 5,
-            valor: 195.23,
-            infrator: "Proprietário",
-            competencia: "Concorrente",
-            abordagem": false,
-            quando_autuar: "Estacionado a menos de 5 metros da esquina.",
-            nao_autuar: "Em fila de trânsito em semáforo.",
-            obs_ait: "Distância estimada da esquina."
-        },
-        {
-            codigo: "554-12",
-            artigo: "181, XVII",
-            descricao: "Estacionar em desacordo com Zona Azul",
-            natureza": "grave",
-            pontos": 5,
-            valor: 195.23,
-            infrator: "Proprietário",
-            competencia: "Concorrente",
-            abordagem": false,
-            quando_autuar: "Sem comprovante de Zona Azul ou tempo estourado.",
-            nao_autuar: "Comprovante válido e visível.",
-            obs_ait: "Ausência de bilhete/crédito."
+            quando_autuar: "Veículo imobilizado com rodas sobre a calçada ou faixa.",
+            nao_autuar: "Parada rápida para embarque/desembarque com condutor ao volante.",
+            obs_ait: "Especificar se obstruía a circulação de pedestres."
         },
         {
             codigo: "555-00",
             artigo: "181, XVIII",
-            descricao: "Estacionar em local proibido por placa R-6a",
+            descricao: "Estacionar em local/horário proibido especificamente pela sinalização (placa R-6a)",
             natureza": "media",
             pontos": 4,
             valor: 130.16,
             infrator: "Proprietário",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Veículo estacionado na extensão da placa R-6a.",
+            quando_autuar: "Veículo estacionado na extensão regulamentada pela placa R-6a.",
             nao_autuar: "Operação rápida de embarque/desembarque.",
-            obs_ait: "Localização da placa."
-        },
-        {
-            codigo: "556-80",
-            artigo: "181, XIX",
-            descricao: "Estacionar em local de proibição de parada e estacionamento (R-6b)",
-            natureza": "grave",
-            pontos": 5,
-            valor: 195.23,
-            infrator: "Proprietário",
-            competencia: "Concorrente",
-            abordagem": false,
-            quando_autuar: "Imobilizado em trecho de proibição total (R-6b).",
-            nao_autuar: "Pane mecânica com triângulo sinalizador.",
-            obs_ait: "Confirmar placa R-6b."
+            obs_ait: "Citar a localização da placa R-6a."
         },
         {
             codigo: "573-80",
             artigo: "186, II",
-            descricao: "Transitar pela contramão em via de sentido único",
+            descricao: "Transitar pela contramão em via de sentido único de circulação",
             natureza": "gravissima",
             pontos": 7,
             valor: 293.47,
@@ -572,22 +501,6 @@
             quando_autuar: "Sentido oposto ao regulamentado por placa R-3.",
             nao_autuar: "Manobra pontual de conversão.",
             obs_ait: "Nome da via e direção percorrida."
-        },
-
-        // --- PARTE 2: Art. 186 ao 210 ---
-        {
-            codigo: "574-61",
-            artigo: "186, III",
-            descricao: "Transitar pela contramão em rodovias, vias de duplo sentido, divididas por canteiro",
-            natureza": "gravissima",
-            pontos": 7,
-            valor: 293.47,
-            infrator: "Condutor",
-            competencia: "Concorrente",
-            abordagem": false,
-            quando_autuar: "Rodar na pista contrária em rodovias ou vias com divisor físico.",
-            nao_autuar: "Ultrapassagem regulamentada em trecho permitido.",
-            obs_ait: "Local e sentido percorrido na contramão."
         },
         {
             codigo: "581-97",
@@ -599,9 +512,9 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Rodar com o veículo sobre o passeio público, calçada ou ciclovia.",
-            nao_autuar: "Cruzamento rápido para acesso a garagens.",
-            obs_ait: "Descrever o local do passeio ou canteiro."
+            quando_autuar: "Rodar com o veículo sobre o passeio público, calçada, gramado ou ciclovia.",
+            nao_autuar: "Cruzamento da calçada em velocidade reduzida para acesso a garagens.",
+            obs_ait: "Descrever o local da calçada ou canteiro por onde transitou."
         },
         {
             codigo: "583-50",
@@ -613,7 +526,7 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem": true,
-            quando_autuar: "Condutor que desatende ordem verbal, gestual ou sinal de parada do agente.",
+            quando_autuar: "Condutor que desatende ordem verbal, gestual ou sinal de parada.",
             nao_autuar: "Ordem física impossível de ser cumprida por obstáculo na via.",
             obs_ait: "Descrever a ordem dada e a recusa do condutor."
         },
@@ -624,12 +537,12 @@
             natureza": "gravissima",
             pontos": 7,
             valor: 1467.35,
-            infrator": "Condutor",
+            infrator: "Condutor",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Realizar ultrapassagem transpondo marca viária longitudinal amarela contínua.",
-            nao_autuar: "Desvio de obstáculo imóvel na pista.",
-            obs_ait: "Descrever a marcação contínua na pista."
+            quando_autuar: "Ultrapassagem transpondo marca longitudinal contínua.",
+            nao_autuar: "Desvio de obstáculo imóvel.",
+            obs_ait: "Descrever marcação viária."
         },
         {
             codigo: "605-01",
@@ -641,9 +554,9 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Transpor o cruzamento com o foco vermelho aceso.",
-            nao_autuar: "Desvio para abrir passagem a veículo de emergência.",
-            obs_ait: "Sentido e tipo de fiscalização."
+            quando_autuar: "Ultrapassar a linha de retenção com o foco vermelho aceso.",
+            nao_autuar: "Desvio para abrir passagem a veículo de emergência com sirene ligada.",
+            obs_ait: "Anotar sentido de direção e tipo de fiscalização."
         },
         {
             codigo: "605-02",
@@ -656,7 +569,7 @@
             competencia: "Concorrente",
             abordagem": false,
             quando_autuar: "Não imobilizar completamente o veículo diante do sinal R-1.",
-            nao_autuar: "Mera redução em placa Dê a Preferência (R-2).",
+            nao_autuar: "Mera redução em local sinalizado com Dê a Preferência (R-2).",
             obs_ait: "Confirmar presença e legibilidade da placa R-1."
         },
         {
@@ -669,9 +582,219 @@
             infrator: "Condutor",
             competencia: "Concorrente",
             abordagem": false,
-            quando_autuar: "Pedestre iniciando travessia na faixa sem semáforo e condutor não para.",
-            nao_autuar: "Pedestre parado na calçada sem intenção clara de travessia.",
+            quando_autuar: "Pedestre na faixa sem semáforo e condutor não para.",
+            nao_autuar: "Pedestre parado na calçada sem iniciar travessia.",
             obs_ait: "Registrar que o pedestre já estava na faixa."
+        },
+        {
+            codigo: "745-50",
+            artigo: "218, I",
+            descricao: "Transitar em velocidade superior à máxima em até 20%",
+            natureza": "media",
+            pontos": 4,
+            valor: 130.16,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Velocidade medida pelo radar superior à máxima da via em até 20%.",
+            nao_autuar: "Velocidade considerada dentro da margem de tolerância do medidor.",
+            obs_ait: "Constatar velocidade medida, considerada e limite regulamentado."
+        },
+        {
+            codigo: "746-30",
+            artigo: "218, II",
+            descricao: "Transitar em velocidade superior à máxima em mais de 20% até 50%",
+            natureza": "grave",
+            pontos": 5,
+            valor: 195.23,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Velocidade considerada acima de 20% e até 50% do limite.",
+            nao_autuar: "Excesso de velocidade superior a 50%.",
+            obs_ait: "Constar velocidade aferida por medidor homologado."
+        },
+        {
+            codigo: "747-10",
+            artigo: "218, III",
+            descricao: "Transitar em velocidade superior à máxima em mais de 50%",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 880.41,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Velocidade considerada excedendo 50% do limite máximo.",
+            nao_autuar: "Excesso dentro das faixas do Art. 218, I ou II.",
+            obs_ait: "Indicar modelo do radar, número de série, limite e velocidade considerada."
+        },
+        {
+            codigo: "659-92",
+            artigo: "230, V",
+            descricao: "Conduzir veículo que não esteja registrado ou devidamente licenciado",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Veículo com o licenciamento anual vencido no sistema RENAVAM.",
+            nao_autuar: "Veículo com taxa paga aguardando prazo do calendário oficial.",
+            obs_ait: "Anotar o último exercício quitado do licenciamento."
+        },
+        {
+            codigo: "663-71",
+            artigo: "230, IX",
+            descricao: "Conduzir veículo sem equipamento obrigatório ou ineficiente",
+            natureza": "grave",
+            pontos": 5,
+            valor: 195.23,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Falta de estepe, triângulo ou pneus carecas (TWI).",
+            nao_autuar: "Equipamentos presentes e em perfeito estado.",
+            obs_ait: "Descrever o item faltante ou condição dos pneus."
+        },
+        {
+            codigo: "664-50",
+            artigo: "230, X",
+            descricao: "Conduzir veículo com equipamento obrigatório em desacordo (insulfilm)",
+            natureza": "grave",
+            pontos": 5,
+            valor: 195.23,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Película com transparência inferior ao limite legal do CONTRAN.",
+            nao_autuar: "Película dentro dos limites permitidos.",
+            obs_ait: "Uso de medidor de transmitância ou ausência de chancela."
+        },
+        {
+            codigo: "667-00",
+            artigo: "230, XIII",
+            descricao: "Conduzir veículo com equipamento ou acessório proibido",
+            natureza": "grave",
+            pontos": 5,
+            valor: 195.23,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Uso de antirradar ou iluminação não homologada.",
+            nao_autuar: "Acessórios de fábrica ou regularizados.",
+            obs_ait: "Especificar o acessório proibido."
+        },
+        {
+            codigo: "670-00",
+            artigo: "230, XVI",
+            descricao: "Conduzir veículo com placas de identificação sem legibilidade ou visibilidade",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Proprietário",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Placa apagada, dobrada, suja de lama ou encoberta.",
+            nao_autuar: "Placa perfeitamente legível.",
+            obs_ait: "Descrever o estado da placa de identificação."
+        },
+        {
+            codigo: "691-20",
+            artigo: "232",
+            descricao: "Conduzir veículo sem os documentos de porte obrigatório",
+            natureza": "leve",
+            pontos": 3,
+            valor: 88.38,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Condutor sem documento e sem acesso a sistema no local.",
+            nao_autuar: "Consulta positiva aos sistemas oficiais no local.",
+            obs_ait: "Registrar impossibilidade de consulta."
+        },
+        {
+            codigo: "703-01",
+            artigo: "244, I",
+            descricao: "Conduzir moto sem usar capacete de segurança",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Condutor de veículo de duas rodas sem capacete.",
+            nao_autuar: "Capacete devidamente afivelado.",
+            obs_ait: "Descrever a falta do capacete."
+        },
+        {
+            codigo: "704-81",
+            artigo: "244, II",
+            descricao: "Conduzir moto transportando passageiro sem capacete",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Passageiro na garupa sem capacete.",
+            nao_autuar: "Passageiro com capacete afivelado.",
+            obs_ait: "Especificar que o passageiro estava sem capacete."
+        },
+        {
+            codigo: "705-61",
+            artigo: "244, V",
+            descricao: "Transportar criança menor de 10 anos em moto",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": true,
+            quando_autuar: "Transportar criança menor de 10 anos.",
+            nao_autuar: "Crianças com 10 anos completos ou mais.",
+            obs_ait: "Anotar idade confirmada da criança."
+        },
+        {
+            codigo: "758-70",
+            artigo: "250, I, g",
+            descricao: "Deixar de manter luz baixa acesa de dia em rodovia de pista simples",
+            natureza": "media",
+            pontos": 4,
+            valor: 130.16,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Circulação diurna em rodovia de pista simples sem farol.",
+            nao_autuar: "Veículo com DRL acesa ou em perímetro urbano.",
+            obs_ait: "Rodovia de pista simples fora de área urbana."
+        },
+        {
+            codigo: "763-01",
+            artigo: "252, VI",
+            descricao: "Dirigir veículo utilizando-se de telefone celular",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Condutor segurando ou falando ao telefone celular em movimento.",
+            nao_autuar: "Telefone fixado em suporte no painel sendo utilizado como GPS.",
+            obs_ait: "Informar se estava segurando ou falando."
+        },
+        {
+            codigo: "763-02",
+            artigo: "252, parágrafo único",
+            descricao: "Dirigir veículo manuseando telefone celular",
+            natureza": "gravissima",
+            pontos": 7,
+            valor: 293.47,
+            infrator: "Condutor",
+            competencia: "Concorrente",
+            abordagem": false,
+            quando_autuar: "Operando/digitando na tela do celular em movimento.",
+            nao_autuar: "GPS fixo no suporte sem toque do condutor.",
+            obs_ait: "Descrever a ação de manuseio ou digitação."
         }
     ];
 
@@ -750,7 +873,7 @@
     }
 
     function atualizarContador() {
-        document.getElementById('db-count').innerText = `${infracoes.length} Infrações (Até Art. 210)`;
+        document.getElementById('db-count').innerText = `${infracoes.length} Infrações (Art. 162 a 250)`;
     }
 
     function validarAIT() {
